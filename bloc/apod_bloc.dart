@@ -1,23 +1,44 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:apod_nasa/connection/connection.dart';
 import 'package:apod_nasa/model/apod.dart';
+import 'package:dio/dio.dart';
 
 class APODBloc {
-  final StreamController _streamController = StreamController();
-  // Sink: entrada; Stream: saída.
-  Sink get input => _streamController.sink;
-  Stream get ouput => _streamController.stream;
+  final StreamController _stream = StreamController.broadcast();
 
-  var users = new List<APOD>();
+  Sink get input => _stream.sink;
+  Stream<APOD> get ouput =>
+      _stream.stream.asyncMap((dateSearch) => getAPOD(dateSearch));
 
-  _getAPODs() {
-    API.getAPOD().then((response) {
-      setState(() {
-        Iterable lista = json.decode(response.body);
-        users = lista.map((model) => APOD.fromJson(model)).toList();
-      });
-    });
+  // Example: https://apodapi.herokuapp.com/api/?date=2005-12-24&html_tags=false&image_thumbnail_size=450&absolute_thumbnaill_url=true
+
+  String url(DateTime dateSearch) =>
+      //"https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&image_thumbnail_size=450&absolute_thumbnail_url=true";
+      "https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&absolute_thumbnail_url=false&absolute_thumbnaill_url=true&thumbs=true";
+
+  Future<APOD> getAPOD(DateTime date) async {
+    Response response = await Dio().get(url(date));
+    return APOD.fromJson(response.data);
   }
+
+  Future<APOD> getLatestAPOD() async {
+    Response response = await Dio().get("https://apodapi.herokuapp.com/api/");
+    return APOD.fromJson(response.data);
+  }
+
+  closeStream() {
+    _stream.close();
+    print("Fechei stream");
+  }
+
+  // TODO
+  // getAPODList() {
+  //   API.getAPOD().then((response) {
+  //     setState(() {
+  //       Iterable lista = json.decode(response.body);
+  //       users = lista.map((model) => APOD.fromJson(model)).toList();
+  //     });
+  //   });
+  // }
 }

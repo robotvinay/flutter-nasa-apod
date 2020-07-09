@@ -1,11 +1,12 @@
-import "package:http/http.dart" as http;
+// import "package:http/http.dart" as http;
 
-const urlBase = "https://apodapi.herokuapp.com/";
-//const baseUrl ="http://www.json-generator.com/api/json/get/cfwZmvEBbC?indent=2";
+// const urlBase = "https://apodapi.herokuapp.com/";
 
-class API {
-  static Future getAPOD() async {
-    var url = urlBase + "/users";
-    return await http.get(url);
-  }
-}
+// // Exemplo: https://apodapi.herokuapp.com/api/?date=2005-12-24&html_tags=false&image_thumbnail_size=450&absolute_thumbnail_url=true
+
+// class API {
+//   static Future getAPOD() async {
+//     var url = urlBase + "/users";
+//     return await http.get(url);
+//   }
+// }
