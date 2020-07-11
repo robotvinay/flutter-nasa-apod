@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            buildBody(context),
+            buildBody2(context),
             SizedBox(
               height: 20.0,
             ),
@@ -56,6 +56,46 @@ class _MyHomePageState extends State<MyHomePage> {
   // Botar na inicialização do app (não muda com estado).
   DateTime now = new DateTime.now();
 
+  testCard() {}
+
+  Widget buildBody2(BuildContext context) {
+    return Card(
+      color: Colors.grey[100],
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Image.network(
+                  'https://apod.nasa.gov/apod/image/2007/Neowise_Moophz_960.jpg', fit: BoxFit.fill,),
+              Text(
+                "Flutter - 2019 - Macoratti.net quase tudo para .NET",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                "http://www.macoratti.net",
+                style: TextStyle(fontSize: 14),
+              ),
+              ButtonTheme.bar(
+                  child: ButtonBar(
+                children: <Widget>[
+                  FlatButton(
+                    child: const Text('DETALHES'),
+                    onPressed: () {/* ... */},
+                  ),
+                  FlatButton(
+                    child: const Text('SHARE'),
+                    onPressed: () {/* ... */},
+                  ),
+                ],
+              ))
+            ]),
+      ),
+    );
+  }
+
   Widget buildBody(BuildContext context) {
     return StreamBuilder<APOD>(
         stream: bloc.ouput,
@@ -69,25 +109,56 @@ class _MyHomePageState extends State<MyHomePage> {
 
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
+              //return Center(child: CircularProgressIndicator());
+              return Center(
+                child: Text("Carregando..."),
+              );
             default:
               APOD apod = new APOD();
               apod = snapshot.data;
 
               return Card(
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: apod.mediaType == "image"
-                          ? NetworkImage(apod.url)
-                          : NetworkImage(apod.thumbnailUrl),
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.topCenter,
-                    ),
-                  ),
-                  child: Text("Título: ${apod?.title}"),
-                ),
-              );
+                  color: Colors.grey[100],
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          apod.mediaType == "image"
+                              ? Image.network(apod.url)
+                              : Image.network(apod.thumbnailUrl),
+                          Text(
+                            apod.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Text(
+                            apod.date,
+                            style: TextStyle(fontSize: 16),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            apod.description,
+                            style: TextStyle(fontSize: 14),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          ButtonTheme.bar(
+                              child: ButtonBar(
+                            children: <Widget>[
+                              FlatButton(
+                                child: const Text('DETALHES'),
+                                onPressed: () {/* ... */},
+                              ),
+                              FlatButton(
+                                child: const Text('SHARE'),
+                                onPressed: () {/* ... */},
+                              ),
+                            ],
+                          ))
+                        ]),
+                  ));
+
             // return Row(
             //   crossAxisAlignment: CrossAxisAlignment.center,
             //   mainAxisAlignment: MainAxisAlignment.spaceAround,

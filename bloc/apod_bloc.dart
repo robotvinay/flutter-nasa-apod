@@ -15,7 +15,7 @@ class APODBloc {
 
   String url(DateTime dateSearch) =>
       //"https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&image_thumbnail_size=450&absolute_thumbnail_url=true";
-      "https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&absolute_thumbnail_url=false&absolute_thumbnaill_url=true&thumbs=true";
+      "https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&absolute_thumbnail_url=false&thumbs=true";
 
   Future<APOD> getAPOD(DateTime date) async {
     Response response = await Dio().get(url(date));
