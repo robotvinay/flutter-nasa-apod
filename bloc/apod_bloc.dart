@@ -29,7 +29,7 @@ class APODBloc {
 
   closeStream() {
     _stream.close();
-    print("Fechei stream");
+    print("Stream closed");
   }
 
   // TODO
