@@ -17,7 +17,6 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime now = new DateTime.now();
   DateTime selectedDate = DateTime.now();
 
-  //final bloc = APODBloc();
   APODBloc bloc = new APODBloc();
 
   @override
