@@ -12,9 +12,7 @@ class APODBloc {
       _stream.stream.asyncMap((dateSearch) => getAPOD(dateSearch));
 
   // Example: https://apodapi.herokuapp.com/api/?date=2005-12-24&html_tags=false&image_thumbnail_size=450&absolute_thumbnaill_url=true
-
   String url(DateTime dateSearch) =>
-      //"https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&image_thumbnail_size=450&absolute_thumbnail_url=true";
       "https://apodapi.herokuapp.com/api/?date=$dateSearch&html_tags=false&absolute_thumbnail_url=false&thumbs=true";
 
   Future<APOD> getAPOD(DateTime date) async {
