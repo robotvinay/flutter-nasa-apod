@@ -149,10 +149,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  buildTitleImage() {}
-
-  buildDescription() {}
-
   Future<Null> buildDatePicker(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
