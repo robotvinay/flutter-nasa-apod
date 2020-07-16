@@ -137,18 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  imageVier(BuildContext context) {
-    return Dialog(
-      child: Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: ExactAssetImage('assets/tamas.jpg'), fit: BoxFit.cover)),
-      ),
-    );
-  }
-
   Future<Null> buildDatePicker(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
