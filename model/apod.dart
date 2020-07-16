@@ -8,6 +8,7 @@ class APOD {
   String title;
   String thumbnailUrl;
   String url;
+  String imgUrl;
 
   APOD(
       {this.apodSite,

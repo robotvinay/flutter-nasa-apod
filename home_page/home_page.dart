@@ -1,7 +1,7 @@
 import 'package:apod_nasa/bloc/apod_bloc.dart';
-import 'package:apod_nasa/bloc/home_page_bloc.dart';
+import 'package:apod_nasa/desc_apod/desc.dart';
+import 'package:apod_nasa/image_viewer/viewer.dart';
 import 'package:apod_nasa/model/apod.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -50,20 +50,33 @@ class _MyHomePageState extends State<MyHomePage> {
                   case ConnectionState.waiting:
                     //return Center(child: CircularProgressIndicator());
                     return Center(
-                      child: Text("Loading..."),
+                      child: Text("Waiting..."),
                     );
                   default:
                     APOD apod = new APOD();
                     apod = snapshot.data;
 
+                    if (apod.mediaType == "image") {
+                      apod.imgUrl = apod.url;
+                    } else {
+                      apod.imgUrl = apod.thumbnailUrl;
+                    }
+
                     return Column(children: <Widget>[
-                      AspectRatio(
-                        child: apod.mediaType == "image"
-                            ? Image.network(apod.url, fit: BoxFit.cover)
-                            : Image.network(apod.thumbnailUrl,
-                                fit: BoxFit.cover),
-                        aspectRatio: 2 / 1.5,
-                      ),
+                      GestureDetector(
+                          child: AspectRatio(
+                            child:
+                                Image.network(apod.imgUrl, fit: BoxFit.cover),
+                            aspectRatio: 2 / 1.5,
+                          ),
+                          onTap: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (_) => Viewer(
+                                apod: apod,
+                              ),
+                            );
+                          }),
                       Text(
                         apod.title,
                         maxLines: 1,
@@ -85,12 +98,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           FlatButton(
                             child: const Text('DETAILS'),
                             textColor: Colors.grey.shade800,
-                            onPressed: () {/* ... */},
+                            onPressed: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (_) => DescViewer(
+                                  apod: apod,
+                                ),
+                              );
+                            },
                           ),
                           FlatButton(
                             child: const Text('SHARE'),
                             textColor: Colors.grey.shade800,
-                            onPressed: () {/* ... */},
+                            onPressed: () {},
                           ),
                         ],
                       )
@@ -101,6 +121,14 @@ class _MyHomePageState extends State<MyHomePage> {
         SizedBox(
           height: 20.0,
         ),
+        Center(
+          child: Text(
+            "Select a date to view the ADOD",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         RaisedButton(
           onPressed: () => buildDatePicker(context),
           child: Text('Select date'),
@@ -109,7 +137,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  buildImage() {}
+  imageVier(BuildContext context) {
+    return Dialog(
+      child: Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: ExactAssetImage('assets/tamas.jpg'), fit: BoxFit.cover)),
+      ),
+    );
+  }
 
   buildTitleImage() {}
 
