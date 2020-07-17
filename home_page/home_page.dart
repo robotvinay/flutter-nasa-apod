@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Center(
           child: Text(
-            "Select a date to view the ADOD",
+            "Select a date to view the APOD",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
